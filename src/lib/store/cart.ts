@@ -7,35 +7,36 @@ export interface CartItem {
   description: string;
   price: number;
   quantity: number;
-  imageUrl?: string;
+  image?: string;
 }
 
 interface CartStore {
   items: CartItem[];
-  addItem: (item: CartItem) => void;
+  addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   getTotal: () => number;
 }
 
-export const useCartStore = create<CartStore>()(
+// Zustand Store ohne expliziten Typparameter für create
+export const useCartStore = create(
   persist(
     (set, get) => ({
       items: [],
       
-      addItem: (item: CartItem) => {
+      addItem: (item: Omit<CartItem, 'quantity'> & { quantity?: number }) => {
         set((state) => {
           const existingItemIndex = state.items.findIndex((i) => i.id === item.id);
           
           if (existingItemIndex !== -1) {
             // Das Produkt ist bereits im Warenkorb, erhöhen wir die Menge
             const newItems = [...state.items];
-            newItems[existingItemIndex].quantity += item.quantity;
+            newItems[existingItemIndex].quantity += item.quantity || 1;
             return { items: newItems };
           } else {
             // Neues Produkt zum Warenkorb hinzufügen
-            return { items: [...state.items, item] };
+            return { items: [...state.items, { ...item, quantity: item.quantity || 1 }] };
           }
         });
       },
