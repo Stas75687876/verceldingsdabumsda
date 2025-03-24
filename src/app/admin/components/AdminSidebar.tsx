@@ -15,6 +15,12 @@ import {
   LogOut
 } from 'lucide-react';
 
+// Prop-Definition für AdminSidebar
+interface AdminSidebarProps {
+  isOpen?: boolean;
+  toggleSidebar?: () => void;
+}
+
 const navItems = [
   {
     name: 'Dashboard',
@@ -43,11 +49,23 @@ const navItems = [
   }
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ isOpen = false, toggleSidebar }: AdminSidebarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="h-full w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+    <div className={`h-full ${isOpen ? 'fixed inset-y-0 left-0 z-40 md:relative' : 'hidden md:block'} w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col transition-all`}>
+      {/* Mobile Close Button - nur anzeigen wenn Sidebar geöffnet ist */}
+      {isOpen && (
+        <button
+          className="absolute right-4 top-4 md:hidden"
+          onClick={toggleSidebar}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+      
       {/* Logo und Überschrift */}
       <div className="h-16 flex items-center px-4 border-b border-gray-200 dark:border-gray-800">
         <span className="text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
