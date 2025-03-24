@@ -10,7 +10,7 @@ import Debug from '../components/Debug'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Neuje34+ | Premium Webentwicklung & Digitale Lösungen',
+  title: 'CT Studio | Premium Webentwicklung & Digitale Lösungen',
   description: 'Maßgeschneiderte Webentwicklung mit innovativen Technologien, kreativem Design und SEO-Optimierung für Ihren digitalen Erfolg.',
   keywords: 'Webdesign, Webentwicklung, SEO, React, Next.js, Premium-Websites, E-Commerce, Digitale Transformation'
 }
