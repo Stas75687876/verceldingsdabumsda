@@ -120,8 +120,8 @@ export async function POST(request: Request) {
 
     // FIXED: Immer vollständige, absolute URLs verwenden und den Platzhalter korrekt setzen
     // Stripe erfordert absolute URLs mit korrekter Platzhalter-Syntax
-    const formattedSuccessUrl = "http://localhost:3000/checkout/success?session_id={CHECKOUT_SESSION_ID}";
-    const formattedCancelUrl = "http://localhost:3000/checkout/cancel";
+    const formattedSuccessUrl = "https://ct-studio.store/checkout/success?session_id={CHECKOUT_SESSION_ID}";
+    const formattedCancelUrl = "https://ct-studio.store/checkout/cancel";
 
     // Kundeninformationen validieren
     if (!customerInfo || !customerInfo.email || !customerInfo.name) {
