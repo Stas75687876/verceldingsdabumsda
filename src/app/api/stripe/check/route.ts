@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const hasPublicKey = !!process.env.STRIPE_PUBLIC_KEY;
     const hasSecretKey = !!process.env.STRIPE_SECRET_KEY;
-    let error = null;
+    let error: string | null = null;
     let stripeMode = "undefined";
 
     console.log('Überprüfe Stripe-Konfiguration...');
