@@ -24,6 +24,14 @@ export default function VideoHeader() {
     transform: 'translate(-50%, -50%) rotate(90deg) scale(1.5)'
   };
 
+  // Verbesserte Mobile-Styles für Hochformat-Videos
+  const mobilePortraitVideoStyle = {
+    width: '100vw',
+    height: '100vh',
+    objectFit: 'cover' as const,
+    transform: 'translate(-50%, -50%) scale(1.2)'
+  };
+
   React.useEffect(() => {
     // Direktes Anzeigen des Fallback-Hintergrunds
     setIsLoaded(true);
@@ -114,7 +122,7 @@ export default function VideoHeader() {
           <div className="w-full h-full overflow-hidden">
             <div className="absolute inset-0 scale-110">
               <iframe
-                src={`https://player.vimeo.com/video/1067507561?${getVideoParams()}`}
+                src={`https://player.vimeo.com/video/1068958527?${getVideoParams()}`}
                 width="100%"
                 height="100%"
                 frameBorder="0"
@@ -138,12 +146,12 @@ export default function VideoHeader() {
                   top: '50%',
                   left: '50%',
                   transform: isMobile ? 
-                    'translate(-50%, -50%) scale(1.5)' : 
+                    'translate(-50%, -50%) scale(1.2)' : 
                     'translate(-50%, -50%) scale(1.2)',
                   zIndex: 1,
                   opacity: videoReady ? 1 : 0,
                   transition: 'opacity 1s ease-in',
-                  ...(isMobile ? mobileVideoStyle : {})
+                  ...(isMobile ? mobilePortraitVideoStyle : {})
                 }}
               ></iframe>
             </div>
