@@ -17,6 +17,9 @@ export default function VideoHeader() {
     backgroundImage: 'linear-gradient(to right, #4F46E5, #7C3AED)',
   };
 
+  // Verlässlicher Bildgenerator-URL als Platzhalter (statt lokales Bild, das möglicherweise fehlt)
+  const placeholderUrl = 'https://images.unsplash.com/photo-1579403124614-197f69d8187b?q=80&w=1964&auto=format&fit=crop';
+
   // Mobile Video Fix Styles
   const mobileVideoStyle = {
     width: '100vh',
@@ -68,7 +71,7 @@ export default function VideoHeader() {
         setIsVideoError(true);
         console.warn("Video konnte nicht rechtzeitig geladen werden - Fallback wird dauerhaft angezeigt");
       }
-    }, 8000);
+    }, 10000); // Längere Wartezeit für langsamere Verbindungen
     
     return () => {
       clearTimeout(videoTimeout);
@@ -108,11 +111,12 @@ export default function VideoHeader() {
         {/* Statisches Hintergrundbild, das vor dem Video geladen wird */}
         <div className="absolute inset-0" style={{ opacity: videoReady ? 0 : 1, transition: 'opacity 1s ease-out' }}>
           <Image 
-            src="/header-placeholder.jpg" 
+            src={placeholderUrl} 
             alt="Website-Hintergrund" 
-            layout="fill" 
-            objectFit="cover"
+            fill
+            sizes="100vw"
             priority
+            style={{ objectFit: 'cover' }}
             onError={() => console.log("Fallback-Bild konnte nicht geladen werden")}
           />
         </div>
