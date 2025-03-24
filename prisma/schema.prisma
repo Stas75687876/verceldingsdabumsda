@@ -22,15 +22,18 @@ model User {
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   description String
   price       Float
-  imageUrl    String?
-  featured    Boolean  @default(false)
+  images      String[]  // Array von Bild-URLs
+  features    String[]  // Array von Features/Eigenschaften
+  isPopular   Boolean   @default(false)
+  isPremium   Boolean   @default(false)
+  featured    Boolean   @default(false)
   category    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   orderItems  OrderItem[]
 }
 
