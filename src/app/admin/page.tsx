@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function AdminPage() {
   const router = useRouter();
-  const [initializingDb, setInitializingDb] = useState(false);
-  const [dbInitialized, setDbInitialized] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [initializingDb, setInitializingDb] = React.useState(false);
+  const [dbInitialized, setDbInitialized] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
   
-  useEffect(() => {
+  React.useEffect(() => {
     // Automatische Weiterleitung zum Dashboard (nach kurzer Verzögerung)
     const timeoutId = setTimeout(() => {
       router.push('/admin/dashboard');
