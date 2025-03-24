@@ -10,9 +10,9 @@ import Debug from '../components/Debug'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Krasse Websites - Professionelles Webdesign & Entwicklung',
-  description: 'Wir erstellen beeindruckende Websites mit modernen Technologien, kreativen Designs und SEO-Optimierung für perfekte Online-Präsenz.',
-  keywords: 'Webdesign, Webentwicklung, SEO, Website erstellen, Online-Shop, E-Commerce'
+  title: 'Neuje34+ | Premium Webentwicklung & Digitale Lösungen',
+  description: 'Maßgeschneiderte Webentwicklung mit innovativen Technologien, kreativem Design und SEO-Optimierung für Ihren digitalen Erfolg.',
+  keywords: 'Webdesign, Webentwicklung, SEO, React, Next.js, Premium-Websites, E-Commerce, Digitale Transformation'
 }
 
 export default function RootLayout({
