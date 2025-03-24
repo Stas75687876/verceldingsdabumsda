@@ -26,7 +26,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const handleAddToCart = () => {
     // Validiere die Bild-URL vor dem Hinzufügen zum Warenkorb
-    let validImage = undefined;
+    let validImage: string | undefined = undefined;
     if (product.images && product.images.length > 0) {
       try {
         const imageUrl = product.images[0];
