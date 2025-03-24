@@ -80,7 +80,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         name: product.name,
         description: product.description,
         price: product.price,
-        imageUrl: product.imageUrl,
+        image: product.imageUrl,
       },
       { quantity }
     );
