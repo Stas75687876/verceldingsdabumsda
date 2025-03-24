@@ -1,7 +1,7 @@
 // Hilfsdeklarationen für Module ohne Typdefinitionen
 
 declare module 'react' {
-  import * as React from 'react';
+  import React from 'react';
   export = React;
   export as namespace React;
 }
@@ -16,4 +16,15 @@ declare module 'framer-motion';
 declare module 'lucide-react';
 declare module 'stripe';
 declare module 'zustand';
-declare module 'zustand/middleware'; 
+declare module 'zustand/middleware';
+
+// Declaration file für globale Typen
+declare module "*.svg";
+
+// Erweiterung des Window-Objekts
+interface Window {
+  // Custom window properties
+  google?: any;
+  dataLayer?: any[];
+  fbq?: any;
+} 
