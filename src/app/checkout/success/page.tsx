@@ -7,7 +7,8 @@ import { CheckCircle, Home, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart';
 import { motion } from 'framer-motion';
 
-export default function CheckoutSuccess() {
+// Separate Client-Komponente mit useSearchParams
+function SuccessContent() {
   const searchParams = useSearchParams();
   const clearCart = useCartStore((state) => state.clearCart);
   
@@ -140,5 +141,26 @@ export default function CheckoutSuccess() {
         © {new Date().getFullYear()} Krasse Websites • Flurweg 13, 94527 Aholming • <a href="mailto:kundenservice@ct-studio.de" className="hover:underline">kundenservice@ct-studio.de</a> • <a href="tel:+4915167270985" className="hover:underline">+49 15167270985</a>
       </motion.div>
     </div>
+  );
+}
+
+// Loading-Komponente für Suspense
+function SuccessLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="text-center">
+        <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent"></div>
+        <p className="mt-4 text-gray-700 dark:text-gray-300">Transaktion wird verarbeitet...</p>
+      </div>
+    </div>
+  );
+}
+
+// Hauptkomponente mit Suspense-Boundary
+export default function CheckoutSuccess() {
+  return (
+    <React.Suspense fallback={<SuccessLoading />}>
+      <SuccessContent />
+    </React.Suspense>
   );
 } 
