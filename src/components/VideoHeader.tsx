@@ -4,6 +4,73 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
+// Blasen-Komponente für den animierten Hintergrund
+const Bubble = ({ size, left, top, delay, duration }: { 
+  size: number, 
+  left: string, 
+  top: string, 
+  delay: number,
+  duration: number
+}) => {
+  return (
+    <motion.div
+      className="absolute rounded-full opacity-10"
+      style={{
+        width: size,
+        height: size,
+        left,
+        top,
+        background: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+      }}
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ 
+        scale: [0, 1.2, 1],
+        opacity: [0, 0.2, 0.1],
+        y: [0, -150]
+      }}
+      transition={{ 
+        duration: duration,
+        delay: delay,
+        repeat: Infinity, 
+        repeatType: "loop",
+        repeatDelay: 2
+      }}
+    />
+  );
+};
+
+// Pulsierender Kreis für zusätzliche Bewegung
+const PulsingCircle = ({ size, left, top, delay }: { 
+  size: number, 
+  left: string, 
+  top: string, 
+  delay: number 
+}) => {
+  return (
+    <motion.div
+      className="absolute rounded-full"
+      style={{
+        width: size,
+        height: size,
+        left,
+        top,
+        background: 'radial-gradient(circle, rgba(99,102,241,0.2) 0%, rgba(99,102,241,0) 70%)',
+      }}
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ 
+        scale: [0.8, 1.3, 0.8],
+        opacity: [0, 0.3, 0]
+      }}
+      transition={{ 
+        duration: 4,
+        delay,
+        repeat: Infinity,
+        repeatType: "loop"
+      }}
+    />
+  );
+};
+
 export default function VideoHeader() {
   const [isMobile, setIsMobile] = React.useState(false);
   
@@ -21,32 +88,74 @@ export default function VideoHeader() {
     };
   }, []);
 
+  // Dynamisch Blasen generieren
+  const bubbles = React.useMemo(() => {
+    // Weniger Blasen auf Mobilgeräten
+    const count = isMobile ? 8 : 15;
+    return Array.from({ length: count }).map((_, i) => {
+      const size = Math.floor(Math.random() * 180) + 50; // 50-230px
+      const left = `${Math.floor(Math.random() * 100)}%`;
+      const top = `${Math.floor(Math.random() * 100)}%`;
+      const delay = Math.random() * 8;
+      const duration = Math.random() * 8 + 8; // 8-16 Sekunden
+
+      return (
+        <Bubble 
+          key={`bubble-${i}`}
+          size={size}
+          left={left}
+          top={top}
+          delay={delay}
+          duration={duration}
+        />
+      );
+    });
+  }, [isMobile]);
+
+  // Pulsierende Kreise für zusätzliche Bewegung
+  const pulsingCircles = React.useMemo(() => {
+    const count = isMobile ? 3 : 5;
+    return Array.from({ length: count }).map((_, i) => {
+      const size = Math.floor(Math.random() * 300) + 200; // 200-500px
+      const left = `${Math.floor(Math.random() * 100)}%`;
+      const top = `${Math.floor(Math.random() * 100)}%`;
+      const delay = Math.random() * 3;
+
+      return (
+        <PulsingCircle 
+          key={`pulse-${i}`}
+          size={size}
+          left={left}
+          top={top}
+          delay={delay}
+        />
+      );
+    });
+  }, [isMobile]);
+
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Video-Hintergrund mit verbesserten Fülloptionen */}
-      <div className="absolute inset-0 bg-black">
-        {/* Video mit optimierter Größe und Position */}
-        <div className="absolute inset-0 w-full h-full">
-          <video 
-            autoPlay 
-            muted 
-            loop 
-            playsInline
-            className={`absolute inset-0 min-w-full min-h-full object-cover ${
-              isMobile ? 'object-center scale-[2.0]' : 'scale-[1.2]'
-            }`}
-            style={{
-              width: '100%',
-              height: '100%'
-            }}
-          >
-            <source src="https://player.vimeo.com/progressive_redirect/playback/1068958527/rendition/1080p/file.mp4?loc=external" type="video/mp4" />
-            Ihr Browser unterstützt keine HTML5-Videos.
-          </video>
+      {/* Animierter Hintergrund mit Blasen */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900">
+        
+        {/* Statische Elemente im Hintergrund */}
+        <div className="absolute inset-0 overflow-hidden opacity-30">
+          <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
+              <path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(99,102,241,0.3)" strokeWidth="0.5" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+          </svg>
+        </div>
+
+        {/* Blasen im Hintergrund */}
+        <div className="absolute inset-0 overflow-hidden">
+          {bubbles}
+          {pulsingCircles}
         </div>
         
-        {/* Dunklerer Overlay für bessere Lesbarkeit */}
-        <div className="absolute inset-0 bg-black opacity-60"></div>
+        {/* Overlay für bessere Lesbarkeit */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70"></div>
       </div>
 
       {/* Content mit verbesserter Positionierung */}
