@@ -31,29 +31,32 @@ export default function ContactPage() {
     setSubmitError(null);
 
     try {
-      // API-Aufruf zum Senden der E-Mail
-      const response = await fetch('/api/contact', {
+      // FormSubmit.co verwenden - ein kostenloser Dienst, der ohne Konfiguration funktioniert
+      const response = await fetch('https://formsubmit.co/ajax/formulare@ct-studio.store', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          phone: formData.phone,
+          phone: formData.phone || 'Nicht angegeben',
           subject: formData.subject,
           message: formData.message,
-          recipient: 'kundenservice@ct-studio.store'
+          _subject: `Neue Kontaktanfrage: ${formData.subject}`,
+          _template: 'table', // Formatierte E-Mail
+          _captcha: 'false'   // Captcha für die erste E-Mail deaktivieren (später aktivieren)
         }),
       });
 
       const data = await response.json();
       
-      if (!response.ok) {
-        throw new Error(data.error || 'Es ist ein Fehler beim Senden der E-Mail aufgetreten');
+      if (!response.ok || data.success !== true) {
+        throw new Error(data.message || 'Es ist ein Fehler beim Senden der E-Mail aufgetreten');
       }
       
-      console.log('Formular erfolgreich gesendet an kundenservice@ct-studio.store:', formData);
+      console.log('Formular erfolgreich gesendet an formulare@ct-studio.store:', formData);
       setSubmitSuccess(true);
       setFormData({
         name: '',
