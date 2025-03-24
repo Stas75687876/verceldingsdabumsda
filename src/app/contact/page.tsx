@@ -32,7 +32,7 @@ export default function ContactPage() {
 
     try {
       // FormSubmit.co verwenden - ein kostenloser Dienst, der ohne Konfiguration funktioniert
-      const response = await fetch('https://formsubmit.co/ajax/formulare@ct-studio.store', {
+      const response = await fetch('https://formsubmit.co/ajax/kundenservice@ct-studio.store', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export default function ContactPage() {
         throw new Error(data.message || 'Es ist ein Fehler beim Senden der E-Mail aufgetreten');
       }
       
-      console.log('Formular erfolgreich gesendet an formulare@ct-studio.store:', formData);
+      console.log('Formular erfolgreich gesendet an kundenservice@ct-studio.store:', formData);
       setSubmitSuccess(true);
       setFormData({
         name: '',
