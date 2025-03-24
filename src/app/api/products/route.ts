@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/db';
 
 // GET /api/products - Alle Produkte abrufen
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
     // Produkte aus der Datenbank abrufen
     const products = await prisma.product.findMany({
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 }
 
 // POST /api/products - Ein neues Produkt erstellen
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     // Authentifizierung prüfen
     const session = await getServerSession(authOptions);

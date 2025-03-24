@@ -6,7 +6,7 @@ import prisma from '@/lib/db';
 
 // GET /api/products/[id] - Ein einzelnes Produkt abrufen
 export async function GET(
-  request: NextRequest,
+  request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
