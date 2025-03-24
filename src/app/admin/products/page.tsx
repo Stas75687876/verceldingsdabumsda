@@ -315,7 +315,7 @@ export default function ProductsPage() {
                     : 'border-gray-300 dark:border-gray-600'
               }`}
             >
-              <input {...getInputProps()} />
+              <input {...getInputProps({ refKey: null } as any)} />
               <div className="flex flex-col items-center justify-center text-center">
                 {isUploading ? (
                   <>
