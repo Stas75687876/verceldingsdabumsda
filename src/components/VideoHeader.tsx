@@ -23,26 +23,30 @@ export default function VideoHeader() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Video-Hintergrund mit vereinfachtem Setup */}
-      <div className="absolute inset-0 bg-gray-900">
-        {/* Inline Hintergrundsvideo statt iframe für bessere Mobilkompatibilität */}
-        <div className="absolute inset-0 overflow-hidden">
+      {/* Video-Hintergrund mit verbesserten Fülloptionen */}
+      <div className="absolute inset-0 bg-black">
+        {/* Video mit optimierter Größe und Position */}
+        <div className="absolute inset-0 w-full h-full">
           <video 
             autoPlay 
             muted 
             loop 
             playsInline
-            className={`object-cover w-full h-full ${isMobile ? 'object-center scale-150' : 'object-center scale-110'}`}
-            poster="/images/video-poster.jpg"
+            className={`absolute inset-0 min-w-full min-h-full object-cover ${
+              isMobile ? 'object-center scale-[2.0]' : 'scale-[1.2]'
+            }`}
+            style={{
+              width: '100%',
+              height: '100%'
+            }}
           >
             <source src="https://player.vimeo.com/progressive_redirect/playback/1068958527/rendition/1080p/file.mp4?loc=external" type="video/mp4" />
-            {/* Fallback für Browser, die das Video nicht unterstützen */}
             Ihr Browser unterstützt keine HTML5-Videos.
           </video>
         </div>
         
-        {/* Overlay mit verbessertem Farbverlauf für bessere Lesbarkeit */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/90"></div>
+        {/* Dunklerer Overlay für bessere Lesbarkeit */}
+        <div className="absolute inset-0 bg-black opacity-60"></div>
       </div>
 
       {/* Content mit verbesserter Positionierung */}
@@ -74,8 +78,8 @@ export default function VideoHeader() {
         </motion.div>
       </div>
       
-      {/* Scroll-Hinweis mit korrigierter Position für alle Geräte */}
-      <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center items-center">
+      {/* Besser sichtbarer Scroll-Hinweis */}
+      <div className="absolute bottom-10 left-0 right-0 z-10 flex justify-center items-center">
         <motion.div 
           className="text-white text-center"
           initial={{ opacity: 0 }}
@@ -83,7 +87,7 @@ export default function VideoHeader() {
           transition={{ delay: 1, duration: 2, repeat: Infinity }}
         >
           <div className="flex flex-col items-center">
-            <p className="text-sm mb-2">Mehr entdecken</p>
+            <p className="text-sm mb-2 font-medium">Mehr entdecken</p>
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
