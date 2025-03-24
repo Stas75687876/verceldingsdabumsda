@@ -3,32 +3,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function VideoHeader() {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-  const [videoReady, setVideoReady] = React.useState(false);
-  const [isVideoError, setIsVideoError] = React.useState(false);
   const [isMobile, setIsMobile] = React.useState(false);
-  const [shouldLoadVideo, setShouldLoadVideo] = React.useState(false);
-  const [placeholderVisible, setPlaceholderVisible] = React.useState(true);
   
-  // Optimierter, einfacher Hintergrund-Gradient (kein Bild) als Basis-Fallback
-  const fallbackStyle = {
-    backgroundImage: 'linear-gradient(to right, #4F46E5, #7C3AED)',
-  };
-
-  // Logo als Platzhalter (kein externes Bild das manchmal laden könnte und manchmal nicht)
-  const placeholderUrl = '/logo.svg';
-
-  // Mobile Video Fix Styles
-  const mobileVideoStyle = {
-    width: '100vh',
-    height: '100vw',
-    transform: 'translate(-50%, -50%) rotate(90deg) scale(1.5)'
-  };
-
-  // Verbesserte Mobile-Styles für Hochformat-Videos
+  // Optimierte Mobile-Styles für Hochformat-Videos
   const mobilePortraitVideoStyle = {
     width: '100vw',
     height: '100vh',
@@ -37,128 +16,46 @@ export default function VideoHeader() {
   };
 
   React.useEffect(() => {
-    // Direktes Anzeigen des Fallback-Hintergrunds
-    setIsLoaded(true);
-    
-    // Prüfen, ob es sich um ein mobiles Gerät handelt
+    // Nur Mobile-Check beibehalten
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
     
-    // Initial und bei Resize-Events prüfen
     checkMobile();
     window.addEventListener('resize', checkMobile);
     
-    // Video erst laden, wenn die Seite vollständig geladen ist
-    const loadVideo = () => {
-      // Verzögere das Video-Laden, um andere kritische Ressourcen zu priorisieren
-      setTimeout(() => setShouldLoadVideo(true), 100);
-    };
-    
-    if (document.readyState === 'complete') {
-      loadVideo();
-    } else {
-      window.addEventListener('load', loadVideo);
-    }
-    
-    // Längerer Timeout, um bei sehr langsamen Verbindungen das Video komplett zu überspringen
-    const errorTimeout = setTimeout(() => {
-      if (!videoReady) {
-        setIsVideoError(true);
-        console.warn("Video konnte nicht rechtzeitig geladen werden - Fallback wird dauerhaft angezeigt");
-      }
-    }, 12000); // Noch längere Wartezeit
-    
     return () => {
-      clearTimeout(errorTimeout);
       window.removeEventListener('resize', checkMobile);
-      window.removeEventListener('load', loadVideo);
     };
-  }, [videoReady]);
-
-  // Video-Parameter für optimale Performance
-  const getVideoParams = () => {
-    // Niedrigere Qualität für mobile Geräte
-    const quality = isMobile ? '540p' : '720p';
-    
-    // Verzögerte Autoplay-Parameter erst setzen, wenn Video geladen werden soll
-    return shouldLoadVideo 
-      ? `autoplay=1&loop=1&background=1&muted=1&controls=0&quality=${quality}&playsinline=1&dnt=1` 
-      : `autoplay=0&loop=1&background=1&muted=1&controls=0&quality=${quality}&playsinline=1&dnt=1`;
-  };
-
-  // Handler für erfolgreichen Video-Load
-  const handleVideoLoaded = () => {
-    // Erst nach einer Verzögerung das Video einblenden
-    setTimeout(() => {
-      setVideoReady(true);
-      // Sanftes Ausblenden des Platzhalters
-      setTimeout(() => {
-        setPlaceholderVisible(false);
-      }, 500);
-    }, 200);
-  };
+  }, []);
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Video-Hintergrund */}
+      {/* Nur Video-Hintergrund */}
       <div className="absolute inset-0 z-0">
-        {/* Fallback-Gradient, IMMER sichtbar mit angepasster Deckkraft */}
-        <div 
-          className="absolute inset-0 transition-opacity duration-1000"
-          style={{
-            ...fallbackStyle,
-            opacity: videoReady ? 0.2 : 1
-          }}
-        />
-        
-        {/* Statischer Platzhalter wird nur angezeigt, wenn nötig */}
-        {placeholderVisible && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-indigo-800 to-purple-800"
-               style={{ opacity: videoReady ? 0 : 1, transition: 'opacity 1s ease-out' }}>
-            <div className="w-32 h-32 animate-pulse">
-              <Image 
-                src={placeholderUrl}
-                alt="Logo" 
-                width={128}
-                height={128}
-                priority
-              />
-            </div>
-          </div>
-        )}
-        
-        {/* Vimeo-Video Container - IMMER im DOM, aber versteckt wenn nicht bereit */}
-        <div className="w-full h-full overflow-hidden" 
-             style={{ opacity: videoReady ? 1 : 0, transition: 'opacity 1s ease-in' }}>
+        {/* Nur das Video */}
+        <div className="w-full h-full overflow-hidden">
           <div className="absolute inset-0 scale-110">
-            {shouldLoadVideo && (
-              <iframe
-                src={`https://player.vimeo.com/video/1068958527?${getVideoParams()}`}
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                allow="autoplay; fullscreen"
-                title="Hintergrundvideo"
-                onLoad={handleVideoLoaded}
-                onError={() => {
-                  console.error("Video konnte nicht geladen werden");
-                  setIsVideoError(true);
-                }}
-                style={{ 
-                  width: '100%',
-                  height: isMobile ? '100%' : '120%',
-                  objectFit: 'cover',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: isMobile ? 
-                    'translate(-50%, -50%) scale(1.2)' : 
-                    'translate(-50%, -50%) scale(1.2)',
-                  ...(isMobile ? mobilePortraitVideoStyle : {})
-                }}
-              ></iframe>
-            )}
+            <iframe
+              src={`https://player.vimeo.com/video/1068958527?autoplay=1&loop=1&background=1&muted=1&controls=0&quality=${isMobile ? '540p' : '720p'}&playsinline=1&dnt=1`}
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              allow="autoplay; fullscreen"
+              title="Hintergrundvideo"
+              style={{ 
+                width: '100%',
+                height: isMobile ? '100%' : '120%',
+                objectFit: 'cover',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: isMobile ? 
+                  'translate(-50%, -50%) scale(1.2)' : 
+                  'translate(-50%, -50%) scale(1.2)',
+                ...(isMobile ? mobilePortraitVideoStyle : {})
+              }}
+            ></iframe>
           </div>
         </div>
         
