@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 export default function Debug() {
-  const [stripeInfo, setStripeInfo] = useState<{
+  const [stripeInfo, setStripeInfo] = React.useState<{
     publicKey: string | null;
     hasSecretKey: boolean;
     stripeMode: string | null;
@@ -15,7 +15,7 @@ export default function Debug() {
     error: null
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     const checkStripeConfig = async () => {
       try {
         // Prüfe, ob Stripe-Keys verfügbar sind

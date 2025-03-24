@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -45,12 +45,12 @@ const mockProducts = [
 ];
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  const [product, setProduct] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = React.useState<any>(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [quantity, setQuantity] = React.useState(1);
   const { addToCart, isAdding, notification, hideNotification } = useAddToCart();
   
-  useEffect(() => {
+  React.useEffect(() => {
     // In einer realen Anwendung würde hier ein API-Aufruf erfolgen
     const foundProduct = mockProducts.find(p => p.id === params.id);
     

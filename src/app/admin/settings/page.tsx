@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function SettingsPage() {
-  const [generalSettings, setGeneralSettings] = useState({
+  const [generalSettings, setGeneralSettings] = React.useState({
     siteName: 'Krasse Websites',
     siteDescription: 'Professionelles Webdesign & Entwicklung',
     contactEmail: 'info@krassewebsites.de',
@@ -11,21 +11,21 @@ export default function SettingsPage() {
     address: 'Musterstraße 123, 12345 Berlin'
   });
   
-  const [seoSettings, setSeoSettings] = useState({
+  const [seoSettings, setSeoSettings] = React.useState({
     metaTitle: 'Krasse Websites - Professionelles Webdesign & Entwicklung',
     metaDescription: 'Wir erstellen beeindruckende Websites mit modernen Technologien, kreativen Designs und SEO-Optimierung für perfekte Online-Präsenz.',
     metaKeywords: 'Webdesign, Webentwicklung, SEO, Website erstellen, Online-Shop, E-Commerce',
     googleAnalyticsId: 'UA-XXXXXXXX-X'
   });
   
-  const [socialMedia, setSocialMedia] = useState({
+  const [socialMedia, setSocialMedia] = React.useState({
     facebook: 'https://facebook.com/krassewebsites',
     twitter: 'https://twitter.com/krassewebsites',
     instagram: 'https://instagram.com/krassewebsites',
     linkedin: 'https://linkedin.com/company/krassewebsites'
   });
   
-  const [savedMessage, setSavedMessage] = useState('');
+  const [savedMessage, setSavedMessage] = React.useState('');
   
   const handleGeneralSubmit = (e: React.FormEvent) => {
     e.preventDefault();
