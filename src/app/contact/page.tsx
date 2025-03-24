@@ -165,8 +165,11 @@ export default function ContactPage() {
                 method="POST"
                 className="space-y-4"
                 onSubmit={() => {
-                  setFormSubmitted(true);
-                  setSubmitSuccess(true);
+                  setIsSubmitting(true);
+                  setTimeout(() => {
+                    setSubmitSuccess(true);
+                    setIsSubmitting(false);
+                  }, 1000);
                 }}
               >
                 {/* Konfiguration für FormSubmit */}
@@ -174,6 +177,7 @@ export default function ContactPage() {
                 <input type="hidden" name="_template" value="table" />
                 <input type="hidden" name="_captcha" value="false" />
                 <input type="hidden" name="_next" value={typeof window !== 'undefined' ? window.location.href : ''} />
+                <input type="text" name="_honey" style={{ display: 'none' }} /> {/* Honeypot für Spam-Schutz */}
 
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name *</label>
