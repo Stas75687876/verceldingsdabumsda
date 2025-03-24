@@ -7,16 +7,8 @@ import Link from 'next/link';
 export default function VideoHeader() {
   const [isMobile, setIsMobile] = React.useState(false);
   
-  // Optimierte Mobile-Styles für Hochformat-Videos
-  const mobilePortraitVideoStyle = {
-    width: '100vw',
-    height: '100vh',
-    objectFit: 'cover' as const,
-    transform: 'translate(-50%, -50%) scale(1.2)'
-  };
-
   React.useEffect(() => {
-    // Nur Mobile-Check beibehalten
+    // Mobile-Check mit verbesserten Breakpoints
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -31,39 +23,25 @@ export default function VideoHeader() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Nur Video-Hintergrund */}
+      {/* Video-Hintergrund mit vereinfachtem Setup */}
       <div className="absolute inset-0 z-0">
-        {/* Nur das Video */}
-        <div className="w-full h-full overflow-hidden">
-          <div className="absolute inset-0 scale-110">
-            <iframe
-              src={`https://player.vimeo.com/video/1068958527?autoplay=1&loop=1&background=1&muted=1&controls=0&quality=${isMobile ? '540p' : '720p'}&playsinline=1&dnt=1`}
-              width="100%"
-              height="100%"
-              frameBorder="0"
-              allow="autoplay; fullscreen"
-              title="Hintergrundvideo"
-              style={{ 
-                width: '100%',
-                height: isMobile ? '100%' : '120%',
-                objectFit: 'cover',
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: isMobile ? 
-                  'translate(-50%, -50%) scale(1.2)' : 
-                  'translate(-50%, -50%) scale(1.2)',
-                ...(isMobile ? mobilePortraitVideoStyle : {})
-              }}
-            ></iframe>
-          </div>
+        {/* Video-Container mit korrigiertem CSS */}
+        <div className="w-full h-full">
+          <iframe
+            src="https://player.vimeo.com/video/1068958527?autoplay=1&loop=1&background=1&muted=1&controls=0&playsinline=1&dnt=1"
+            className={`absolute top-0 left-0 w-full h-full object-cover ${isMobile ? 'pointer-events-none' : ''}`}
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            title="Hintergrundvideo"
+            loading="eager"
+          ></iframe>
         </div>
         
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/60 to-black/70" style={{ zIndex: 2 }}></div>
+        {/* Overlay mit verbessertem Farbverlauf für bessere Lesbarkeit */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/80" style={{ zIndex: 2 }}></div>
       </div>
 
-      {/* Content */}
+      {/* Content mit verbesserter Positionierung */}
       <div className="relative z-10 flex flex-col justify-center items-center h-full text-white text-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -92,20 +70,22 @@ export default function VideoHeader() {
         </motion.div>
       </div>
       
-      {/* Scroll-Hinweis */}
-      <motion.div 
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 text-white"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1, y: [0, 10, 0] }}
-        transition={{ delay: 1, duration: 2, repeat: Infinity }}
-      >
-        <div className="flex flex-col items-center">
-          <p className="text-sm mb-2">Mehr entdecken</p>
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
-      </motion.div>
+      {/* Scroll-Hinweis mit korrigierter Position für alle Geräte */}
+      <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center items-center">
+        <motion.div 
+          className="text-white text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 10, 0] }}
+          transition={{ delay: 1, duration: 2, repeat: Infinity }}
+        >
+          <div className="flex flex-col items-center">
+            <p className="text-sm mb-2">Mehr entdecken</p>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 } 
