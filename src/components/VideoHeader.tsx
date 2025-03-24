@@ -24,21 +24,25 @@ export default function VideoHeader() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* Video-Hintergrund mit vereinfachtem Setup */}
-      <div className="absolute inset-0 z-0">
-        {/* Video-Container mit korrigiertem CSS */}
-        <div className="w-full h-full">
-          <iframe
-            src="https://player.vimeo.com/video/1068958527?autoplay=1&loop=1&background=1&muted=1&controls=0&playsinline=1&dnt=1"
-            className={`absolute top-0 left-0 w-full h-full object-cover ${isMobile ? 'pointer-events-none' : ''}`}
-            frameBorder="0"
-            allow="autoplay; fullscreen"
-            title="Hintergrundvideo"
-            loading="eager"
-          ></iframe>
+      <div className="absolute inset-0 bg-gray-900">
+        {/* Inline Hintergrundsvideo statt iframe für bessere Mobilkompatibilität */}
+        <div className="absolute inset-0 overflow-hidden">
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            className={`object-cover w-full h-full ${isMobile ? 'object-center scale-150' : 'object-center scale-110'}`}
+            poster="/images/video-poster.jpg"
+          >
+            <source src="https://player.vimeo.com/progressive_redirect/playback/1068958527/rendition/1080p/file.mp4?loc=external" type="video/mp4" />
+            {/* Fallback für Browser, die das Video nicht unterstützen */}
+            Ihr Browser unterstützt keine HTML5-Videos.
+          </video>
         </div>
         
         {/* Overlay mit verbessertem Farbverlauf für bessere Lesbarkeit */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/70 to-black/80" style={{ zIndex: 2 }}></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/75 to-black/90"></div>
       </div>
 
       {/* Content mit verbesserter Positionierung */}
@@ -71,7 +75,7 @@ export default function VideoHeader() {
       </div>
       
       {/* Scroll-Hinweis mit korrigierter Position für alle Geräte */}
-      <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center items-center">
+      <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center items-center">
         <motion.div 
           className="text-white text-center"
           initial={{ opacity: 0 }}
