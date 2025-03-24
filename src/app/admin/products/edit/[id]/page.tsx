@@ -398,7 +398,8 @@ export default function EditProductPage({ params }: { params: { id: string } }) 
                     : 'border-gray-300 dark:border-gray-600'
               }`}
             >
-              <input {...getInputProps()} />
+              {/* Filter nur die HTML-kompatiblen Input-Props */}
+              <input {...getInputProps({ refKey: null } as any)} />
               <div className="flex flex-col items-center justify-center text-center">
                 {isUploading ? (
                   <>
