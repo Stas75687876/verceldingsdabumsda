@@ -54,18 +54,18 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
-                  Über uns
-                </Link>
-              </li>
-              <li>
                 <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
                   Kontakt
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-gray-400 hover:text-white transition-colors">
-                  Blog
+                <Link href="/impressum" className="text-gray-400 hover:text-white transition-colors">
+                  Impressum
+                </Link>
+              </li>
+              <li>
+                <Link href="/datenschutz" className="text-gray-400 hover:text-white transition-colors">
+                  Datenschutz
                 </Link>
               </li>
             </ul>
@@ -111,8 +111,8 @@ export default function Footer() {
               <p className="mb-2">94527 Aholming</p>
               <p className="mb-2">Deutschland</p>
               <p className="mb-2">
-                <a href="mailto:kundenservice@ct-studio.de" className="hover:text-white transition-colors">
-                  kundenservice@ct-studio.de
+                <a href="mailto:kundenservice@ct-studio.store" className="hover:text-white transition-colors">
+                  kundenservice@ct-studio.store
                 </a>
               </p>
               <p>

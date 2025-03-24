@@ -32,10 +32,10 @@ export default function ContactPage() {
 
     try {
       // Hier würde normalerweise ein API-Aufruf stattfinden
-      // Für Demo-Zwecke simulieren wir einen erfolgreichen API-Aufruf
+      // In einer echten Implementierung würde die Nachricht an kundenservice@ct-studio.store gesendet werden
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      console.log('Formular gesendet:', formData);
+      console.log('Formular gesendet an kundenservice@ct-studio.store:', formData);
       setSubmitSuccess(true);
       setFormData({
         name: '',
@@ -268,8 +268,8 @@ export default function ContactPage() {
                   <div className="ml-4">
                     <h3 className="text-lg font-medium text-gray-900 dark:text-white">E-Mail</h3>
                     <p className="text-gray-600 dark:text-gray-300 mt-1">
-                      <a href="mailto:kundenservice@ct-studio.de" className="hover:text-blue-600 transition-colors">
-                        kundenservice@ct-studio.de
+                      <a href="mailto:kundenservice@ct-studio.store" className="hover:text-blue-600 transition-colors">
+                        kundenservice@ct-studio.store
                       </a>
                     </p>
                   </div>
