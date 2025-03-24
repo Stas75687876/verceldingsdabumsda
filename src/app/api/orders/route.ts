@@ -58,7 +58,7 @@ export async function POST(request: Request) {
       data: {
         customerName,
         customerEmail,
-        total,
+        totalAmount: total,
         status,
         items: {
           create: items.map((item: any) => ({
