@@ -16,12 +16,10 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 const prisma = new PrismaClient();
 
-// Um raw body in Next.js 14 zu bekommen, müssen wir config exportieren
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// Um raw body in Next.js 14 zu bekommen, müssen wir die richtige Konfiguration verwenden
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+// Die alte config wird nicht mehr unterstützt in Next.js 14 App Router
 
 // POST /api/webhook - Stripe-Webhook empfangen
 export async function POST(req: Request) {
