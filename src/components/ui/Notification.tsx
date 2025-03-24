@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle, XCircle, X } from 'lucide-react';
 
@@ -20,7 +20,7 @@ export function Notification({
   onClose,
 }: NotificationProps) {
   // Automatisches Schließen nach Ablauf der Dauer
-  useEffect(() => {
+  React.useEffect(() => {
     if (visible && duration > 0) {
       const timer = setTimeout(() => {
         onClose?.();

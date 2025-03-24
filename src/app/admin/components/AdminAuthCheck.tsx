@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, usePathname } from 'next/navigation';
 
@@ -16,7 +16,7 @@ export default function AdminAuthCheck({ children }: AdminAuthCheckProps) {
   // Debug-Modus für die Entwicklung (auf false setzen für Produktion)
   const isDevMode = true;
   
-  useEffect(() => {
+  React.useEffect(() => {
     console.log('AdminAuthCheck:', { 
       status, 
       pathname, 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircle, Home, ShoppingBag, ArrowRight } from 'lucide-react';
@@ -11,7 +11,7 @@ export default function CheckoutSuccess() {
   const searchParams = useSearchParams();
   const clearCart = useCartStore((state) => state.clearCart);
   
-  useEffect(() => {
+  React.useEffect(() => {
     // Warenkorb leeren, nachdem die Zahlung erfolgreich war
     clearCart();
     
