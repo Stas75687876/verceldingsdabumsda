@@ -4,68 +4,115 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-// Blasen-Komponente für den animierten Hintergrund
-const Bubble = ({ size, left, top, delay, duration }: { 
-  size: number, 
-  left: string, 
-  top: string, 
-  delay: number,
-  duration: number
-}) => {
+// SVG-Komponente für topografische Linien
+const TopographicLines = () => {
+  const pathVariants = {
+    hidden: { opacity: 0, pathLength: 0 },
+    visible: (i: number) => ({
+      opacity: 1,
+      pathLength: 1,
+      transition: {
+        pathLength: {
+          duration: 3,
+          delay: i * 0.2,
+          ease: "easeInOut"
+        },
+        opacity: {
+          duration: 0.5,
+          delay: i * 0.2
+        }
+      }
+    })
+  };
+
+  // Langsame Rotation und Verschiebung des gesamten SVG
+  const containerVariants = {
+    animate: {
+      rotate: [0, 1, -1, 0],
+      scale: [1, 1.02, 0.98, 1],
+      x: [0, 5, -5, 0],
+      y: [0, -5, 5, 0],
+      transition: {
+        duration: 20,
+        repeat: Infinity,
+        repeatType: "mirror",
+        ease: "easeInOut"
+      }
+    }
+  };
+
   return (
-    <motion.div
-      className="absolute rounded-full opacity-10"
-      style={{
-        width: size,
-        height: size,
-        left,
-        top,
-        background: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
-      }}
-      initial={{ scale: 0, opacity: 0 }}
-      animate={{ 
-        scale: [0, 1.2, 1],
-        opacity: [0, 0.2, 0.1],
-        y: [0, -150]
-      }}
-      transition={{ 
-        duration: duration,
-        delay: delay,
-        repeat: Infinity, 
-        repeatType: "loop",
-        repeatDelay: 2
-      }}
-    />
+    <motion.div 
+      className="absolute inset-0 opacity-75" 
+      variants={containerVariants}
+      animate="animate"
+    >
+      <svg 
+        className="w-full h-full" 
+        viewBox="0 0 800 600" 
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <g fill="none" stroke="rgba(255, 255, 255, 0.1)">
+          {Array.from({ length: 15 }).map((_, i) => (
+            <motion.path
+              key={`topo-${i}`}
+              d={generateTopographicPath(i)}
+              strokeWidth={1}
+              custom={i}
+              variants={pathVariants}
+              initial="hidden"
+              animate="visible"
+            />
+          ))}
+        </g>
+      </svg>
+    </motion.div>
   );
 };
 
-// Pulsierender Kreis für zusätzliche Bewegung
-const PulsingCircle = ({ size, left, top, delay }: { 
-  size: number, 
-  left: string, 
-  top: string, 
-  delay: number 
-}) => {
+// Funktion zur Generierung von Pfaden für topografische Linien
+const generateTopographicPath = (seed: number): string => {
+  // Basis-Störung für die Linie
+  const baseSeed = seed * 10;
+  
+  // Startpunkt
+  let path = `M -100 ${300 + baseSeed}`;
+  
+  // Anzahl der Kontrollpunkte
+  const pointCount = 15;
+  
+  // Generiere mehrere Kurvenpunkte
+  for (let i = 0; i <= pointCount; i++) {
+    const x = (i * 1000 / pointCount) - 100;
+    
+    // Sinuskurve mit verschiedenen Frequenzen und Amplituden
+    const yBase = 300 + baseSeed + Math.sin(i * 0.5 + seed) * 50;
+    const yVariation = Math.sin(i * 0.2 + seed * 2) * 30 + Math.sin(i * 0.1 + seed * 0.5) * 20;
+    const y = yBase + yVariation;
+    
+    // Füge zur Pfaddefinition hinzu
+    path += ` L ${x} ${y}`;
+  }
+  
+  return path;
+};
+
+// Pulsierende Nebel-Komponente für zusätzliche Tiefe
+const PulsingFog = () => {
   return (
     <motion.div
-      className="absolute rounded-full"
-      style={{
-        width: size,
-        height: size,
-        left,
-        top,
-        background: 'radial-gradient(circle, rgba(99,102,241,0.2) 0%, rgba(99,102,241,0) 70%)',
-      }}
-      initial={{ scale: 0.8, opacity: 0 }}
+      className="absolute inset-0"
+      initial={{ opacity: 0 }}
       animate={{ 
-        scale: [0.8, 1.3, 0.8],
-        opacity: [0, 0.3, 0]
+        opacity: [0, 0.15, 0.1, 0.15, 0],
       }}
-      transition={{ 
-        duration: 4,
-        delay,
+      transition={{
+        duration: 10,
         repeat: Infinity,
-        repeatType: "loop"
+        repeatType: "mirror",
+      }}
+      style={{
+        background: 'radial-gradient(circle at 50% 50%, rgba(99,102,241,0.2) 0%, rgba(0,0,0,0) 70%)',
       }}
     />
   );
@@ -75,7 +122,6 @@ export default function VideoHeader() {
   const [isMobile, setIsMobile] = React.useState(false);
   
   React.useEffect(() => {
-    // Mobile-Check mit verbesserten Breakpoints
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
@@ -88,74 +134,35 @@ export default function VideoHeader() {
     };
   }, []);
 
-  // Dynamisch Blasen generieren
-  const bubbles = React.useMemo(() => {
-    // Weniger Blasen auf Mobilgeräten
-    const count = isMobile ? 8 : 15;
-    return Array.from({ length: count }).map((_, i) => {
-      const size = Math.floor(Math.random() * 180) + 50; // 50-230px
-      const left = `${Math.floor(Math.random() * 100)}%`;
-      const top = `${Math.floor(Math.random() * 100)}%`;
-      const delay = Math.random() * 8;
-      const duration = Math.random() * 8 + 8; // 8-16 Sekunden
-
-      return (
-        <Bubble 
-          key={`bubble-${i}`}
-          size={size}
-          left={left}
-          top={top}
-          delay={delay}
-          duration={duration}
-        />
-      );
-    });
-  }, [isMobile]);
-
-  // Pulsierende Kreise für zusätzliche Bewegung
-  const pulsingCircles = React.useMemo(() => {
-    const count = isMobile ? 3 : 5;
-    return Array.from({ length: count }).map((_, i) => {
-      const size = Math.floor(Math.random() * 300) + 200; // 200-500px
-      const left = `${Math.floor(Math.random() * 100)}%`;
-      const top = `${Math.floor(Math.random() * 100)}%`;
-      const delay = Math.random() * 3;
-
-      return (
-        <PulsingCircle 
-          key={`pulse-${i}`}
-          size={size}
-          left={left}
-          top={top}
-          delay={delay}
-        />
-      );
-    });
-  }, [isMobile]);
-
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* Animierter Hintergrund mit Blasen */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900">
-        
-        {/* Statische Elemente im Hintergrund */}
-        <div className="absolute inset-0 overflow-hidden opacity-30">
-          <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
-              <path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(99,102,241,0.3)" strokeWidth="0.5" />
-            </pattern>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
-        </div>
-
-        {/* Blasen im Hintergrund */}
+      {/* Animierter Hintergrund mit topografischen Linien */}
+      <div className="absolute inset-0 bg-black">
+        {/* Topografische Linien-Animation */}
         <div className="absolute inset-0 overflow-hidden">
-          {bubbles}
-          {pulsingCircles}
+          <TopographicLines />
+          
+          {/* Mehrere Nebelschichten für Tiefenwirkung */}
+          <PulsingFog />
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 30% 70%, rgba(99,102,241,0.1) 0%, rgba(0,0,0,0) 50%)',
+            }}
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.1, 0.15, 0.1],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              repeatType: "reverse",
+            }}
+          />
         </div>
         
         {/* Overlay für bessere Lesbarkeit */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-70"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-60"></div>
       </div>
 
       {/* Content mit verbesserter Positionierung */}
@@ -187,7 +194,7 @@ export default function VideoHeader() {
         </motion.div>
       </div>
       
-      {/* Besser sichtbarer Scroll-Hinweis */}
+      {/* Scroll-Hinweis */}
       <div className="absolute bottom-10 left-0 right-0 z-10 flex justify-center items-center">
         <motion.div 
           className="text-white text-center"
