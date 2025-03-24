@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { AdminLayout } from '@/components/admin/AdminLayout';
+import React from 'react';
 import Link from 'next/link';
+import { AdminLayout } from '@/components/admin/AdminLayout';
 
 // Definition der Bestellungs-Status-Typen
 type OrderStatus = 'ausstehend' | 'in_bearbeitung' | 'abgeschlossen' | 'storniert';
@@ -30,9 +30,9 @@ interface Order {
 }
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [orders, setOrders] = React.useState<Order[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
 
   // Funktion zum Abrufen der Bestellungen
   const fetchOrders = async () => {
@@ -79,7 +79,7 @@ export default function OrdersPage() {
   };
 
   // Bestellungen beim ersten Laden abrufen
-  useEffect(() => {
+  React.useEffect(() => {
     fetchOrders();
   }, []);
 

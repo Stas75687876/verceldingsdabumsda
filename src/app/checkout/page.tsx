@@ -1,13 +1,13 @@
 'use client';
 
 import React from 'react';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../components/shop/CartProvider';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { CartItem } from '../../components/shop/CartProvider';
+import { loadStripe } from '@stripe/stripe-js';
 
 // Typ-Definitionen für die Zahlungsmethode
 interface PaymentMethod {
@@ -31,7 +31,7 @@ interface FormData {
 export default function CheckoutPage() {
   const router = useRouter();
   const { cart, clearCart, totalPrice } = useCart();
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = React.useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
@@ -41,10 +41,10 @@ export default function CheckoutPage() {
     country: 'DE',
     notes: ''
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [availablePaymentMethods, setAvailablePaymentMethods] = useState<string[]>(['card']);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('card');
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [availablePaymentMethods, setAvailablePaymentMethods] = React.useState<string[]>(['card']);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState<string>('card');
   
   // Zahlungsmethoden-Icons und Namen mit ihren IDs
   const paymentMethodsData: PaymentMethod[] = [
@@ -205,7 +205,7 @@ export default function CheckoutPage() {
     }
   ];
 
-  useEffect(() => {
+  React.useEffect(() => {
     // Leerer Warenkorb, zur Startseite zurückleiten
     if (cart.length === 0) {
       router.push('/');

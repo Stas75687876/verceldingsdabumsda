@@ -1,7 +1,6 @@
 'use client';
 
-import * as React from 'react';
-import { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,7 +9,7 @@ import VideoHeader from '@/components/VideoHeader';
 import Footer from '@/components/Footer';
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState('websites');
+  const [activeTab, setActiveTab] = React.useState('websites');
   const [isProcessVideoLoaded, setIsProcessVideoLoaded] = React.useState(false);
   
   const services = {

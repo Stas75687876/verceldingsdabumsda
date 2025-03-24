@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import { useCartStore, CartItem } from '@/lib/store/cart';
 
 export type AddToCartOptions = {
@@ -7,8 +7,8 @@ export type AddToCartOptions = {
 };
 
 export function useAddToCart() {
-  const [isAdding, setIsAdding] = useState(false);
-  const [notification, setNotification] = useState<{
+  const [isAdding, setIsAdding] = React.useState(false);
+  const [notification, setNotification] = React.useState<{
     visible: boolean;
     message: string;
     type: 'success' | 'error';

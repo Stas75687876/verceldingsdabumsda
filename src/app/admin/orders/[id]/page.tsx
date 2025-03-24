@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import Link from 'next/link';
@@ -34,10 +34,10 @@ interface Order {
 }
 
 export default function OrderDetailsPage({ params }: { params: { id: string } }) {
-  const [order, setOrder] = useState<Order | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [updateLoading, setUpdateLoading] = useState(false);
+  const [order, setOrder] = React.useState<Order | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+  const [updateLoading, setUpdateLoading] = React.useState(false);
   const router = useRouter();
 
   // Funktion zum Abrufen der Bestelldetails
@@ -63,7 +63,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
   };
 
   // Bestelldetails beim ersten Laden abrufen
-  useEffect(() => {
+  React.useEffect(() => {
     fetchOrderDetails();
   }, [params.id]);
 
