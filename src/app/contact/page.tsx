@@ -31,11 +31,29 @@ export default function ContactPage() {
     setSubmitError(null);
 
     try {
-      // Hier würde normalerweise ein API-Aufruf stattfinden
-      // In einer echten Implementierung würde die Nachricht an kundenservice@ct-studio.store gesendet werden
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // API-Aufruf zum Senden der E-Mail
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message,
+          recipient: 'kundenservice@ct-studio.store'
+        }),
+      });
+
+      const data = await response.json();
       
-      console.log('Formular gesendet an kundenservice@ct-studio.store:', formData);
+      if (!response.ok) {
+        throw new Error(data.error || 'Es ist ein Fehler beim Senden der E-Mail aufgetreten');
+      }
+      
+      console.log('Formular erfolgreich gesendet an kundenservice@ct-studio.store:', formData);
       setSubmitSuccess(true);
       setFormData({
         name: '',
@@ -44,9 +62,9 @@ export default function ContactPage() {
         subject: '',
         message: ''
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Fehler beim Senden des Formulars:', error);
-      setSubmitError('Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut.');
+      setSubmitError(error.message || 'Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut.');
     } finally {
       setIsSubmitting(false);
     }

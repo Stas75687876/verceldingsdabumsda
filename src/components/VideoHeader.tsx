@@ -7,15 +7,32 @@ import Link from 'next/link';
 export default function VideoHeader() {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [isVideoError, setIsVideoError] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
   
   // Fallback-Hintergrund, falls das Video nicht geladen werden kann
   const fallbackStyle = {
     backgroundImage: 'linear-gradient(to right, #4F46E5, #7C3AED)',
   };
 
+  // Mobile Video Fix Styles
+  const mobileVideoStyle = {
+    width: '100vh',
+    height: '100vw',
+    transform: 'translate(-50%, -50%) rotate(90deg) scale(1.5)'
+  };
+
   React.useEffect(() => {
+    // Prüfen, ob es sich um ein mobiles Gerät handelt
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
     // Direktes Laden des Hintergrunds, während das Video noch lädt
     setIsLoaded(true);
+    
+    // Initial und bei Resize-Events prüfen
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
     
     // Timeout für den Fall, dass das Video zu lange zum Laden braucht
     const videoTimeout = setTimeout(() => {
@@ -25,7 +42,10 @@ export default function VideoHeader() {
       }
     }, 5000);
     
-    return () => clearTimeout(videoTimeout);
+    return () => {
+      clearTimeout(videoTimeout);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   return (
@@ -45,7 +65,7 @@ export default function VideoHeader() {
         <div className="w-full h-full overflow-hidden">
           <div className="absolute inset-0 scale-110">
             <iframe
-              src="https://player.vimeo.com/video/1067507561?autoplay=1&loop=1&background=1&muted=1&controls=0&quality=720p&playsinline=1&dnt=1"
+              src={`https://player.vimeo.com/video/1067507561?autoplay=1&loop=1&background=1&muted=1&controls=0&quality=${isMobile ? '540p' : '720p'}&playsinline=1&dnt=1`}
               width="100%"
               height="100%"
               frameBorder="0"
@@ -55,13 +75,16 @@ export default function VideoHeader() {
               onError={() => setIsVideoError(true)}
               style={{ 
                 width: '100%',
-                height: '120%', // Überdimensioniert, um alle Bildschirmgrößen abzudecken
+                height: isMobile ? '100%' : '120%',
                 objectFit: 'cover',
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                transform: 'translate(-50%, -50%) scale(1.2)',
-                zIndex: 1
+                transform: isMobile ? 
+                  'translate(-50%, -50%) scale(1.5)' : 
+                  'translate(-50%, -50%) scale(1.2)',
+                zIndex: 1,
+                ...(isMobile ? mobileVideoStyle : {})
               }}
             ></iframe>
           </div>
